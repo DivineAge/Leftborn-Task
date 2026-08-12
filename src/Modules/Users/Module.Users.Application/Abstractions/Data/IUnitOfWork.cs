@@ -1,6 +1,6 @@
 
 
-namespace Module.Users.Application.Abstractions.Data;
+namespace Modules.Users.Application.Abstractions.Data;
 
 public interface IUnitOfWork
 {

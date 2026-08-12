@@ -1,6 +1,6 @@
 using Test.Common.Domain;
 
-namespace Module.Users.Domain.Users;
+namespace Modules.Users.Domain.Users;
 
 public sealed class User : Entity
 {
