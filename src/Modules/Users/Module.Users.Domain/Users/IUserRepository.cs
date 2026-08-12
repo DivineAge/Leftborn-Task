@@ -1,6 +1,6 @@
 
 
-namespace Modules.Users.Domain.Users;
+namespace Module.Users.Domain.Users;
 
 public interface IUserRepository
 {

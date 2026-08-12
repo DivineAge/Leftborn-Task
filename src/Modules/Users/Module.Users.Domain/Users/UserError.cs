@@ -1,6 +1,6 @@
 using Test.Common.Domain;
 
-namespace Modules.Users.Domain.Users;
+namespace Module.Users.Domain.Users;
 
 public class UserError
 {
