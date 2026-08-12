@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  Test.api:
+    image: ${DOCKER_REGISTRY-}taskapi
+    container_name: Task.Api
+    build:
+      context: .
+      dockerfile: src/API/Task.Api/Dockerfile
+    ports:
+      - 5000:8080
+      - 5001:8081
+
+  Test.database:
+    image: postgres:latest
+    container_name: Task.Database
+    environment:
+      - POSTGRES_DB=Test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  Test.seq:
+    image: datalust/seq:latest
+    container_name: Task.Seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - 5341:5341
+      - 8081:80
+
+
+        
