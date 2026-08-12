@@ -3,9 +3,9 @@ using Dapper;
 using Test.Common.Application.Messaging;
 using Test.Common.Application.Data;
 using Test.Common.Domain;
-using Modules.Users.Domain.Users;
+using Module.Users.Domain.Users;
 
-namespace Modules.Users.Application.Users.GetUser;
+namespace Module.Users.Application.Users.GetUser;
 
 internal sealed class GetUserQueryHandler(IDbConnectionFactory dbConnectionFactory) : IQueryHandler<GetUserQuery, UserResponse>
 {

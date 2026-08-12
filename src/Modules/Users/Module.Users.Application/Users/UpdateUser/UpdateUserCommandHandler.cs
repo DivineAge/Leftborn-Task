@@ -1,9 +1,9 @@
 ﻿using Test.Common.Application.Messaging;
 using Test.Common.Domain;
-using Modules.Users.Application.Abstractions.Data;
-using Modules.Users.Domain.Users;
+using Module.Users.Application.Abstractions.Data;
+using Module.Users.Domain.Users;
 
-namespace Modules.Users.Application.Users.UpdateUser;
+namespace Module.Users.Application.Users.UpdateUser;
 
 internal sealed class UpdateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<UpdateUserCommand>

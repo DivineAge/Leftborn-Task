@@ -1,9 +1,9 @@
-using Modules.Users.Application.Abstractions.Data;
-using Modules.Users.Domain.Users;
+using Module.Users.Application.Abstractions.Data;
+using Module.Users.Domain.Users;
 using Test.Common.Application.Messaging;
 using Test.Common.Domain;
 
-namespace Modules.Users.Application.Users.RegisterUser;
+namespace Module.Users.Application.Users.RegisterUser;
 
 public class UserRegisterCommandHandler(IUnitOfWork unitOfWork, IUserRepository userRepository) : ICommandHandler<RegisterUserCommand, Guid>
 {
