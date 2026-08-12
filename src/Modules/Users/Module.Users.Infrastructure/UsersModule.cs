@@ -34,8 +34,7 @@ public static class UsersModule
             );
 
         services.AddScoped<IUserRepository, UserRepository>();
-
-        services.AddScoped<IUnitOfWork, UsersDbContext>();
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<UsersDbContext>());
 
     }
 

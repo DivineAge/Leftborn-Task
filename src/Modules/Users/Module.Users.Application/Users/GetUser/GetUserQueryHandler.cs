@@ -15,11 +15,11 @@ internal sealed class GetUserQueryHandler(IDbConnectionFactory dbConnectionFacto
         const string sql =
                 $"""
              SELECT
-                 id AS {nameof(UserResponse.Id)},
-                 first_name AS {nameof(UserResponse.FirstName)},
-                 last_name AS {nameof(UserResponse.LastName)}
-             FROM users.users
-             WHERE id = @UserId
+                 "Id" AS {nameof(UserResponse.Id)},
+                 "FirstName" AS {nameof(UserResponse.FirstName)},
+                 "LastName" AS {nameof(UserResponse.LastName)}
+             FROM users."Users"
+             WHERE "Id" = @UserId
              """;
         UserResponse? user = await connection.QuerySingleOrDefaultAsync<UserResponse>(sql, new { UserId = request.Id });
         if (user is null)

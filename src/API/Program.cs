@@ -5,6 +5,7 @@ using System.Reflection;
 using Test.Common.Application;
 using Test.Common.Infrastructure;
 using Test.Common.Infrastructure.Configuration;
+using Test.Common.Presentation.Endpoints;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler();
 
+app.MapEndpoints();
 
 app.Run();
 
