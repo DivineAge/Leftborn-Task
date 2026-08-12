@@ -12,6 +12,7 @@
     <PackageReference Include="Npgsql" Version="8.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
     <PackageReference Include="Quartz.Extensions.Hosting" Version="3.19.1" />
+    <PackageReference Include="SQLite" Version="3.53.4" />
   </ItemGroup>
 
   <ItemGroup>
