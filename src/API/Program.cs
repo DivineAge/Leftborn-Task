@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Middleware;
+using Module.Songs.Infrastructure;
 using Module.Users.Infrastructure;
 using System.Reflection;
 using Test.Common.Application;
@@ -17,7 +18,8 @@ builder.Services.AddSwaggerDocumentation();
 
 
 Assembly[] moduleAssemblies = [
-    Module.Users.Application.AssemblyRefrence.Assembly
+    Module.Users.Application.AssemblyRefrence.Assembly,
+    Module.Songs.Application.AssemblyRefrence.Assembly,
 ];
 
 builder.Services.AddApplication(moduleAssemblies);
@@ -26,9 +28,10 @@ string databaseConnectionString = builder.Configuration.GetConnectionStringOrThr
 
 builder.Services.AddInfrastructure(databaseConnectionString);
 
-builder.Configuration.AddModuleConfiguration(["users", "events", "ticketing", "attendance"]);
+builder.Configuration.AddModuleConfiguration(["users", "songs", "playlists"]);
 
 builder.Services.AddUsersModule(builder.Configuration);
+builder.Services.AddSongsModule(builder.Configuration);
 
 WebApplication app = builder.Build();
 
