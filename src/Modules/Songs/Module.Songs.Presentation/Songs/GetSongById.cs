@@ -14,7 +14,7 @@ internal sealed class GetSongById : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("songs/{id}", async (Guid id, ISender sender) =>
+        app.MapGet("songs/id/{id}", async (Guid id, ISender sender) =>
         {
             Result<SongResponse> result = await sender.Send(new GetSongQuery(id));
 

@@ -27,14 +27,14 @@ internal sealed class GetPublisherSongsQueryHandler(
         const string sql =
             $"""
             SELECT
-                id AS {nameof(SongResponse.Id)},
-                name AS {nameof(SongResponse.Name)},
-                time_in_seconds AS {nameof(SongResponse.TimeInSeconds)},
-                publisher_id AS {nameof(SongResponse.PublisherId)}
+                "Id" AS {nameof(SongResponse.Id)},
+                "Name" AS {nameof(SongResponse.Name)},
+                "TimeInSeconds" AS {nameof(SongResponse.TimeInSeconds)},
+                "PublisherId" AS {nameof(SongResponse.PublisherId)}
             FROM songs."Songs"
-            WHERE publisher_id = @PublisherId
+            WHERE "PublisherId" = @publisherid::uuid
             """;
-        IEnumerable<SongResponse> songs = await connection.QueryAsync<SongResponse>(sql, request.PublisherId);
+        IEnumerable<SongResponse> songs = await connection.QueryAsync<SongResponse>(sql, new { publisherid = request.PublisherId });
 
         return songs.ToList();
     }

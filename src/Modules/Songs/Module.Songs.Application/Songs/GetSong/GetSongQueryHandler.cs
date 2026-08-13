@@ -17,15 +17,15 @@ internal sealed class GetSongQueryHandler(IDbConnectionFactory dbConnectionFacto
         const string sql =
             $"""
             SELECT
-                id AS {nameof(SongResponse.Id)},
-                name AS {nameof(SongResponse.Name)},
-                time_in_seconds AS {nameof(SongResponse.TimeInSeconds)},
-                publisher_id AS {nameof(SongResponse.PublisherId)}
+                "Id" AS {nameof(SongResponse.Id)},
+                "Name" AS {nameof(SongResponse.Name)},
+                "TimeInSeconds" AS {nameof(SongResponse.TimeInSeconds)},
+                "PublisherId" AS {nameof(SongResponse.PublisherId)}
             FROM songs."Songs"
-            WHERE id = @SongId
+            WHERE "Id" = @songid
             """;
 
-        SongResponse? song = await connection.QuerySingleOrDefaultAsync<SongResponse>(sql, request);
+        SongResponse? song = await connection.QuerySingleOrDefaultAsync<SongResponse>(sql, new { songid = request.Id });
 
         if (song is null)
         {
