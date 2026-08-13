@@ -16,7 +16,7 @@ internal sealed class CreateSongCommandHandler(ISongRepository songRepository, I
         {
             return Result.Failure<Guid>(PublisherError.NotFound(request.PublisherId));
         }
-        var song = Song.Create(request.PublisherId, request.TimeInSeconds, request.Name);
+        Song song = Song.Create(request.PublisherId, request.TimeInSeconds, request.Name);
 
         songRepository.Insert(song);
 
