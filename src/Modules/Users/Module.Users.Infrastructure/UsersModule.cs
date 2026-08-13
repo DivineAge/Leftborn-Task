@@ -8,7 +8,9 @@ using Microsoft.Extensions.Options;
 using Module.Users.Application.Abstractions.Data;
 using Module.Users.Domain.Users;
 using Module.Users.Infrastructure.Database;
+using Module.Users.Infrastructure.PublicApi;
 using Module.Users.Infrastructure.Users;
+using Module.Users.PublicApi;
 using Test.Common.Presentation.Endpoints;
 
 namespace Module.Users.Infrastructure;
@@ -36,6 +38,7 @@ public static class UsersModule
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<UsersDbContext>());
 
+        services.AddScoped<IUsersApi, UserApi>();
     }
 
 }

@@ -15,12 +15,14 @@ public sealed class User : Entity
 
     public static User Create(string firstName, string lastName)
     {
-        return new User
+        var user = new User
         {
             Id = Guid.NewGuid(),
             FirstName = firstName,
             LastName = lastName
         };
+        user.Raise(new UserRegisterDomainEvent(user.Id));
+        return user;
     }
     public void Update(string firstName, string lastName)
     {
