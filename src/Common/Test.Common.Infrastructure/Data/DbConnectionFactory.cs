@@ -7,9 +7,9 @@ namespace Test.Common.Infrastructure.Data;
 internal sealed class DbConnectionFactory(NpgsqlDataSource dataSource) : IDbConnectionFactory
 {
 
-    public async ValueTask<DbConnection> CreateDbConnectionAsync(CancellationToken cancellationToken = default)
+    public async ValueTask<DbConnection> CreateDbConnectionAsync()
     {
-        return await dataSource.OpenConnectionAsync(cancellationToken);
+        return await dataSource.OpenConnectionAsync();
     }
 }
 
