@@ -7,6 +7,6 @@ public interface ISongRepository
 
     void Insert(Song song);
 
-    void Delete(Guid songId);
+    void Delete(Song song);
 
 }
