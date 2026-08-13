@@ -13,7 +13,7 @@ internal sealed class GetPublisherByIdQueryHandler(IDbConnectionFactory dbConnec
 {
     public async Task<Result<PublisherResponse>> Handle(GetPublisherQuery request, CancellationToken cancellationToken)
     {
-        await using DbConnection connection = await dbConnectionFactory.CreateDbConnectionAsync(cancellationToken);
+        await using DbConnection connection = await dbConnectionFactory.CreateDbConnectionAsync();
 
         const string sql =
                 $"""
@@ -21,7 +21,7 @@ internal sealed class GetPublisherByIdQueryHandler(IDbConnectionFactory dbConnec
                  "Id" AS {nameof(PublisherResponse.PublisherId)},
                  "FirstName" AS {nameof(PublisherResponse.FirstName)},
                  "LastName" AS {nameof(PublisherResponse.LastName)}
-             FROM publishers."Publishers"
+             FROM songs."Publishers"
              WHERE "Id" = @PublisherId
              """;
         PublisherResponse? publisher = await connection.QuerySingleOrDefaultAsync<PublisherResponse>(sql, new { request.PublisherId });
