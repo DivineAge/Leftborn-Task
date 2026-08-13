@@ -1,13 +1,23 @@
-
-
+using MediatR;
+using Module.Songs.Application.Publisher.CreatePubliser;
 using Module.Songs.PublicApi;
+using static MassTransit.ValidationResultExtensions;
 
 namespace Module.Songs.Infrastructure.PublicApi;
 
-public class SongsApi : ISongsApi
+internal class SongsApi(ISender sender) : ISongsApi
 {
-    public Task CreatePublisherAsync(Guid publisherId, string firstName, string lastName, CancellationToken cancellationToken = default)
+    public async Task CreatePublisherAsync(Guid publisherId, string firstName, string lastName, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await sender.Send(new CreatePublisherCommand(publisherId, firstName, lastName), cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to create publisher: {ex.Message}", ex);
+        }
+
+
     }
 }
