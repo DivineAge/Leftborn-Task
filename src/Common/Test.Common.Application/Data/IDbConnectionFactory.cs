@@ -5,6 +5,6 @@ namespace Test.Common.Application.Data;
 
 public interface IDbConnectionFactory
 {
-    ValueTask<DbConnection> CreateDbConnectionAsync(CancellationToken cancellationToken = default);
+    ValueTask<DbConnection> CreateDbConnectionAsync();
 }
 
