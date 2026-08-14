@@ -1,4 +1,5 @@
 
+using Module.Playlist.PublicApi;
 using Module.Songs.PublicApi;
 using Module.Users.Application.Abstractions.Data;
 using Module.Users.Domain.Users;
@@ -7,7 +8,7 @@ using Test.Common.Domain;
 
 namespace Module.Users.Application.Users.RegisterUser;
 
-public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, ISongsApi publicApi, IUserRepository userRepository) : ICommandHandler<RegisterUserCommand, Guid>
+public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, ISongsApi publicApi, IPlaylistApi playlistApi, IUserRepository userRepository) : ICommandHandler<RegisterUserCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
@@ -19,6 +20,8 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, ISongsApi public
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         await publicApi.CreatePublisherAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
+
+        await playlistApi.CreateUserAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
 
         return user.Id;
     }
