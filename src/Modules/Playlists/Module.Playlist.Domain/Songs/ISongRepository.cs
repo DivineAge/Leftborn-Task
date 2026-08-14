@@ -1,0 +1,12 @@
+
+namespace Module.Playlist.Domain.Songs;
+
+public interface ISongRepository
+{
+    Task<Song?> GetAsync(Guid songId, CancellationToken cancellationToken = default);
+
+    void Insert(Song song);
+
+    void Delete(Song song);
+
+}
