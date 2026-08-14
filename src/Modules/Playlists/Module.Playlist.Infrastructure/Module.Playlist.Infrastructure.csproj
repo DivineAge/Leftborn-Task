@@ -6,4 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Test.Common.Infrastructure\Test.Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\Module.Playlist.Application\Module.Playlist.Application.csproj" />
+    <ProjectReference Include="..\Module.Playlist.Presentation\Module.Playlist.Presentation.csproj" />
+    <ProjectReference Include="..\Module.Playlist.PublicApi\Module.Playlist.PublicApi.csproj" />
+  </ItemGroup>
+
 </Project>
