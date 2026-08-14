@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Test.Common.Application\Test.Common.Application.csproj" />
     <ProjectReference Include="..\..\..\Common\Test.Common.Domain\Test.Common.Domain.csproj" />
+    <ProjectReference Include="..\..\Playlists\Module.Playlist.PublicApi\Module.Playlist.PublicApi.csproj" />
     <ProjectReference Include="..\..\Users\Module.Users.PublicApi\Module.Users.PublicApi.csproj" />
     <ProjectReference Include="..\Module.Songs.Domain\Module.Songs.Domain.csproj" />
   </ItemGroup>

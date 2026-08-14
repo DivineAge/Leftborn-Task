@@ -1,4 +1,5 @@
 
+using Module.Playlist.PublicApi;
 using Module.Songs.Application.Abstractions.Data;
 using Module.Songs.Domain.Publisher;
 using Module.Songs.Domain.Songs;
@@ -7,7 +8,7 @@ using Test.Common.Domain;
 
 namespace Module.Songs.Application.Songs.CreateSong;
 
-internal sealed class CreateSongCommandHandler(ISongRepository songRepository, IPublisherRepository publisherRepository, IUnitOfWork unitOfWork) : ICommandHandler<CreateSongCommand, Guid>
+internal sealed class CreateSongCommandHandler(ISongRepository songRepository, IPlaylistApi playlistApi, IPublisherRepository publisherRepository, IUnitOfWork unitOfWork) : ICommandHandler<CreateSongCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(CreateSongCommand request, CancellationToken cancellationToken)
     {
@@ -21,6 +22,8 @@ internal sealed class CreateSongCommandHandler(ISongRepository songRepository, I
         songRepository.Insert(song);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        await playlistApi.CreateSongAsync(song.Id, request.PublisherId, request.TimeInSeconds, request.Name, cancellationToken);
 
         return song.Id;
     }
