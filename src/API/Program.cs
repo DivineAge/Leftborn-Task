@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Middleware;
+using Module.Playlist.Infrastructure;
 using Module.Songs.Infrastructure;
 using Module.Users.Infrastructure;
 using System.Reflection;
@@ -20,6 +21,7 @@ builder.Services.AddSwaggerDocumentation();
 Assembly[] moduleAssemblies = [
     Module.Users.Application.AssemblyRefrence.Assembly,
     Module.Songs.Application.AssemblyRefrence.Assembly,
+    Module.Playlist.Application.AssemblyRefrence.Assembly,
 ];
 
 builder.Services.AddApplication(moduleAssemblies);
@@ -28,10 +30,11 @@ string databaseConnectionString = builder.Configuration.GetConnectionStringOrThr
 
 builder.Services.AddInfrastructure(databaseConnectionString);
 
-builder.Configuration.AddModuleConfiguration(["users", "songs", "playlists"]);
+builder.Configuration.AddModuleConfiguration(["users", "songs", "playlist"]);
 
 builder.Services.AddUsersModule(builder.Configuration);
 builder.Services.AddSongsModule(builder.Configuration);
+builder.Services.AddPlaylistModule(builder.Configuration);
 
 WebApplication app = builder.Build();
 

@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using Module.Users.Infrastructure;
+
 using Module.Users.Infrastructure.Database;
-using Module.Songs.Infrastructure;
+
 using Module.Songs.Infrastructure.Database;
+
+using Module.Playlist.Infrastructure.Database;
 
 namespace API.Extensions;
 
@@ -14,6 +16,7 @@ public static class MigrationExtension
 
         ApplyMigration<UsersDbContext>(scope);
         ApplyMigration<SongsDbContext>(scope);
+        ApplyMigration<PlaylistDbContext>(scope);
     }
     private static void ApplyMigration<TDbContext>(IServiceScope scope)
     where TDbContext : DbContext
