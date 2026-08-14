@@ -8,25 +8,21 @@ using Test.Common.Presentation.Endpoints;
 using Test.Common.Domain;
 using Module.Playlist.Application.PlaylistSongs.GetUserPlaylist;
 
+using Microsoft.AspNetCore.Mvc;
 namespace Module.Playlist.Presentation.Playlist.GetPlaylist;
 
 internal sealed class GetPlaylist : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/playlists/", async (Request request, ISender sender) =>
+        app.MapGet("/api/users/{userId}/playlists/{playlistId}", async (Guid userId, Guid playlistId, ISender sender) =>
         {
-            Result<IEnumerable<UserPlaylistResponse>> result = await sender.Send(new GetUserPlaylistQuery(request.UserId, request.PlaylistId));
+            Result<IEnumerable<UserPlaylistResponse>> result = await sender.Send(new GetUserPlaylistQuery(userId, playlistId));
 
 
             return result.Match(Results.Ok, ApiResults.Problem);
         })
         .AllowAnonymous()
-        .WithTags("Playlists");
+        .WithTags("Users");
     }
-}
-internal sealed class Request
-{
-    public Guid PlaylistId { get; init; }
-    public Guid UserId { get; init; }
 }

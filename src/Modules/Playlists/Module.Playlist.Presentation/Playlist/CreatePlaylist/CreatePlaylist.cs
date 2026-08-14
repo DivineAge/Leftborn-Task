@@ -7,6 +7,8 @@ using Test.Common.Presentation.Endpoints;
 using Test.Common.Domain;
 using Module.Playlist.Application.Playlist.CreatePlaylist;
 
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace Module.Playlist.Presentation.Playlist.CreatePlaylist;
 
@@ -14,7 +16,7 @@ internal sealed class CreatePlaylist : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/playlist", async (Request request, ISender sender) =>
+        app.MapPost("/api/playlist", async ([FromBody]CreatePlaylistRequest request, ISender sender) =>
         {
             Result<Guid> result = await sender.Send(new CreatePlaylistCommand(request.UserId, request.Name));
 
@@ -25,7 +27,7 @@ internal sealed class CreatePlaylist : IEndpoint
     }
 }
 
-internal sealed class Request
+internal sealed class CreatePlaylistRequest
 {
     public Guid UserId { get; init; }
     public string Name { get; init; }

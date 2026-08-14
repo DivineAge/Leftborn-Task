@@ -19,22 +19,22 @@ namespace Module.Playlist.Application.PlaylistSongs.GetUserPlaylist
             await using DbConnection dbConnection = await dbConnectionFactory.CreateDbConnectionAsync();
             const string sql = $"""
                 SELECT
-                    "Id"            AS {nameof(UserPlaylistResponse.SongId)},
-                    "Name"          AS {nameof(UserPlaylistResponse.Name)},
-                    "TimeInSeconds" AS {nameof(UserPlaylistResponse.TimeInSeconds)},
-                    "PublisherId"   AS {nameof(UserPlaylistResponse.PublisherId)}
+                    s."Id"            AS {nameof(UserPlaylistResponse.SongId)},
+                    s."Name"          AS {nameof(UserPlaylistResponse.Name)},
+                    s."TimeInSeconds" AS {nameof(UserPlaylistResponse.TimeInSeconds)},
+                    s."PublisherId"   AS {nameof(UserPlaylistResponse.PublisherId)}
 
-                FROM playlist."Songs" AS s
+                FROM playlists."Songs" AS s
 
-                JOIN playlist."PlaylistSongs" AS ps
+                JOIN playlists."PlaylistSongs" AS ps
                     ON s."Id" = ps."SongId"
 
-                JOIN playlist."Playlists" AS p
+                JOIN playlists."Playlists" AS p
                     ON ps."PlaylistId" = p."Id"
 
                 WHERE
                     p."Id" = @playlistId::uuid
-                    AND p."UserId" = @userId::uuid
+                    AND p."OwnerId" = @userId::uuid
                 """;
             IEnumerable<UserPlaylistResponse> songs =
              await dbConnection.QueryAsync<UserPlaylistResponse>(sql, new { playlistId = query.PlaylistId, userId = query.UserId });

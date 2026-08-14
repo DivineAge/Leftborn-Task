@@ -45,9 +45,7 @@ internal sealed class RemoveSongCommandHandler(
             return Result.Failure(PlaylistSongsErrors.NotFound(request.SongId, request.PlaylistId));
         }
 
-        PlaylistSong playlistSong = PlaylistSong.Create(request.PlaylistId, request.SongId);
-
-        playlistSongsRepository.Delete(playlistSong);
+        playlistSongsRepository.Delete(playListSong);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -9,6 +9,7 @@ using Module.Playlist.Domain.Playlists;
 using Module.Playlist.Domain.Songs;
 using Module.Playlist.Domain.Users;
 using Module.Playlist.Infrastructure.Database;
+using Module.Playlist.Infrastructure.Playlists;
 using Module.Playlist.Infrastructure.PlaylistSongs;
 using Module.Playlist.Infrastructure.Songs;
 using Module.Playlist.Infrastructure.Users;
@@ -40,7 +41,7 @@ public static class PlaylistModule
 
         services.AddScoped<ISongRepository, SongRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IPlaylistRepository, IPlaylistRepository>();
+        services.AddScoped<IPlaylistRepository, PlaylistRepository>();
         services.AddScoped<IPlaylistSongsRepository, PlaylistSongRepository>();
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<PlaylistDbContext>());
