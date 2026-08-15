@@ -15,7 +15,7 @@ internal sealed class UpdateUser : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("/users/{id}", async ([FromRoute] Guid id, [FromBody] Request request, ISender sender) =>
+        app.MapPut("/users/{id}", async ([FromRoute] Guid id, [FromBody] UpdateUserRequest request, ISender sender) =>
         {
             Result result = await sender.Send(new UpdateUserCommand(id, request.FirstName, request.LastName));
 
@@ -24,4 +24,9 @@ internal sealed class UpdateUser : IEndpoint
         }).AllowAnonymous()
         .WithTags(Tags.Users);
     }
+}
+internal sealed class UpdateUserRequest
+{
+    public string FirstName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
 }
