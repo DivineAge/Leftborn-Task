@@ -2,7 +2,7 @@ using Test.Common.Domain;
 
 namespace Module.Songs.Domain.Publisher;
 
-public sealed class Publisher : Entity
+public sealed class Publisher
 {
 
     private Publisher()

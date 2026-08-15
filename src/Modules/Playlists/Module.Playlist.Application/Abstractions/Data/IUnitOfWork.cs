@@ -1,5 +1,3 @@
-
-
 using System.Data.Common;
 
 namespace Module.Playlist.Application.Abstractions.Data;

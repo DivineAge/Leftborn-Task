@@ -15,14 +15,29 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, ISongsApi public
 
         var user = User.Create(command.FirstName, command.LastName);
 
-        userRepository.Insert(user);
+        
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await unitOfWork.BeginTransactionAsync(cancellationToken);
+            
+            userRepository.Insert(user);
+            
+            await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        await publicApi.CreatePublisherAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
+            await publicApi.CreatePublisherAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
 
-        await playlistApi.CreateUserAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
+            await playlistApi.CreateUserAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
 
-        return user.Id;
+            await unitOfWork.CommitTransactionAsync(cancellationToken);
+
+            return user.Id;
+        }
+        catch
+        {
+            await unitOfWork.RollbackTransactionAsync(cancellationToken);
+            throw;
+        };
+
     }
 }

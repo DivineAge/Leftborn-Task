@@ -1,6 +1,3 @@
-
-using Test.Common.Domain;
-
 namespace Module.Playlist.Domain.Songs;
 
 public sealed class Song
@@ -16,11 +13,11 @@ public sealed class Song
 
     public string Name { get; private set; } = null!;
 
-    public static Song Create(Guid id, Guid publisherId, int timeInSeconds, string name)
+    public static Song Create(Guid songId, Guid publisherId, int timeInSeconds, string name)
     {
         var song = new Song
         {
-            Id = id,
+            Id = songId,
             PublisherId = publisherId,
             TimeInSeconds = timeInSeconds,
             Name = name
@@ -28,6 +25,14 @@ public sealed class Song
 
         return song;
     }
-
-
+    public void Update(Guid publisherId, int timeInSeconds, string name)
+    {
+        if (TimeInSeconds == timeInSeconds && Name == name && PublisherId == publisherId)
+        {
+            return;
+        }
+        TimeInSeconds = timeInSeconds;
+        Name = name;
+        PublisherId = publisherId;
+    }
 }

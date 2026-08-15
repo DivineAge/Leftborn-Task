@@ -19,13 +19,28 @@ internal sealed class CreateSongCommandHandler(ISongRepository songRepository, I
         }
         Song song = Song.Create(request.PublisherId, request.TimeInSeconds, request.Name);
 
-        songRepository.Insert(song);
+        
+        
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        try
+        {      
+            await unitOfWork.BeginTransactionAsync(cancellationToken);
 
-        await playlistApi.CreateSongAsync(song.Id, request.PublisherId, request.TimeInSeconds, request.Name, cancellationToken);
+            songRepository.Insert(song);
 
-        return song.Id;
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            await playlistApi.CreateSongAsync(song.Id, request.PublisherId, request.TimeInSeconds, request.Name, cancellationToken);
+
+            await unitOfWork.CommitTransactionAsync(cancellationToken);
+
+            return song.Id;
+        }
+        catch
+        {
+            await unitOfWork.RollbackTransactionAsync(cancellationToken);
+            throw;
+        }
     }
 
 }

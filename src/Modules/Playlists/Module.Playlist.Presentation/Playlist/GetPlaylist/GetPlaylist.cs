@@ -21,6 +21,6 @@ internal sealed class GetPlaylist : IEndpoint
             return result.Match(Results.Ok, ApiResults.Problem);
         })
         .AllowAnonymous()
-        .WithTags("Users");
+        .WithTags("Playlists");
     }
 }

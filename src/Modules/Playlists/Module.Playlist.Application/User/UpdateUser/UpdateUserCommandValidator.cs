@@ -2,7 +2,7 @@
 
 using FluentValidation;
 
-namespace Module.Playlist.Application.User.UpdatePublisher;
+namespace Module.Playlist.Application.User.UpdateUser;
 
 internal sealed class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 {

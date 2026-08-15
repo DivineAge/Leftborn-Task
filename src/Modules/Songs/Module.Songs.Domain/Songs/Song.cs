@@ -28,13 +28,14 @@ public sealed class Song
 
         return song;
     }
-    public void Update(int timeInSeconds, string name)
+    public void Update(Guid publisherId, int timeInSeconds, string name)
     {
-        if (TimeInSeconds == timeInSeconds && Name == name)
+        if (TimeInSeconds == timeInSeconds && Name == name && PublisherId == publisherId)
         {
             return;
         }
         TimeInSeconds = timeInSeconds;
         Name = name;
+        PublisherId = publisherId;
     }
 }

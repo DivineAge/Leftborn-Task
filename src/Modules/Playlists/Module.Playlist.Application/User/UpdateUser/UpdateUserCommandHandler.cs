@@ -5,7 +5,7 @@ using Module.Playlist.Domain.Users;
 using Test.Common.Domain;
 using Test.Common.Application.Messaging;
 
-namespace Module.Playlist.Application.User.UpdatePublisher;
+namespace Module.Playlist.Application.User.UpdateUser;
 
 internal sealed class UpdateUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork) : ICommandHandler<UpdateUserCommand>
 {
