@@ -20,7 +20,8 @@ internal sealed class GetPublisherByIdQueryHandler(IDbConnectionFactory dbConnec
              SELECT
                  "Id" AS {nameof(PublisherResponse.PublisherId)},
                  "FirstName" AS {nameof(PublisherResponse.FirstName)},
-                 "LastName" AS {nameof(PublisherResponse.LastName)}
+                 "LastName" AS {nameof(PublisherResponse.LastName)},
+                    "Email" AS {nameof(PublisherResponse.Email)}
              FROM songs."Publishers"
              WHERE "Id" = @PublisherId
              """;

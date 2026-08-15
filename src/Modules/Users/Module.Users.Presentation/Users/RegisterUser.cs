@@ -18,7 +18,8 @@ internal sealed class RegisterUser : IEndpoint
          {
              Result<Guid> result = await sender.Send(new RegisterUserCommand(
                  request.FirstName,
-                 request.LastName));
+                 request.LastName,
+                 request.Email));
 
              return result.Match(Results.Ok, ApiResults.Problem);
          })
@@ -31,4 +32,5 @@ internal sealed class Request
 {
     public string FirstName { get; init; }
     public string LastName { get; init; }
+    public string Email { get; init; }
 }

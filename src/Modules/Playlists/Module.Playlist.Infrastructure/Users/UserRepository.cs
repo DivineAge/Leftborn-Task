@@ -11,6 +11,11 @@ public class UserRepository(PlaylistDbContext dbContext) : IUserRepository
         return await dbContext.Users.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Users.SingleOrDefaultAsync(x => x.Email == email, cancellationToken);
+    }
+
     public void Insert(User user)
     {
         dbContext.Users.Add(user);

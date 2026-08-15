@@ -15,6 +15,10 @@ internal sealed class CreateUserCommandValidator : AbstractValidator<CreateUserC
         RuleFor(x => x.LastName)
             .NotEmpty().WithMessage("LastName is required.")
             .MaximumLength(50).WithMessage("LastName must not exceed 50 characters.");
+
+        RuleFor(c => c.Email)
+            .NotEmpty().WithMessage("Email is required.")
+            .Matches(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
     }
 
 }

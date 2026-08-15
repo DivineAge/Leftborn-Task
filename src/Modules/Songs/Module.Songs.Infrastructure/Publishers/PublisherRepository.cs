@@ -11,6 +11,11 @@ public class PublisherRepository(SongsDbContext dbContext) : IPublisherRepositor
         return await dbContext.Publishers.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public async Task<Publisher?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Publishers.SingleOrDefaultAsync(x => x.Email == email, cancellationToken);
+    }
+
     public void Insert(Publisher publisher)
     {
         dbContext.Publishers.Add(publisher);

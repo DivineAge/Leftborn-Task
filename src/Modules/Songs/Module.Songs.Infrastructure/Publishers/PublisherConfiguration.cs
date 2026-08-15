@@ -17,6 +17,12 @@ internal sealed class PublisherConfiguration : IEntityTypeConfiguration<Publishe
         builder.Property(p => p.LastName)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.Property(p => p.Email)
+            .IsRequired()
+            .HasMaxLength(200);
+
+        builder.HasIndex(p => p.Email).IsUnique();
     }
 
 }

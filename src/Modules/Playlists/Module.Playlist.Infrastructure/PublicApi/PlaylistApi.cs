@@ -21,11 +21,11 @@ namespace Module.Playlist.Infrastructure.PublicApi
             }
         }
 
-        public async Task CreateUserAsync(Guid userId, string firstName, string lastName, CancellationToken cancellationToken = default)
+        public async Task CreateUserAsync(Guid userId, string firstName, string lastName, string email, CancellationToken cancellationToken = default)
         {
             try
             {
-                await sender.Send(new CreateUserCommand(userId, firstName, lastName), cancellationToken);
+                await sender.Send(new CreateUserCommand(userId, firstName, lastName, email), cancellationToken);
             }
             catch (Exception ex)
             {

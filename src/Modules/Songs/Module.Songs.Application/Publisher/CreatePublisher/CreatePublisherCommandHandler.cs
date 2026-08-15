@@ -4,13 +4,13 @@ using Module.Songs.Domain.Publisher;
 using Test.Common.Application.Messaging;
 using Test.Common.Domain;
 
-namespace Module.Songs.Application.Publisher.CreatePubliser;
+namespace Module.Songs.Application.Publisher.CreatePublisher;
 
 internal sealed class CreatePublisherCommandHandler(IPublisherRepository publisherRepository, IUnitOfWork unitOfWork) : ICommandHandler<CreatePublisherCommand>
 {
     public async Task<Result> Handle(CreatePublisherCommand request, CancellationToken cancellationToken)
     {
-        Domain.Publisher.Publisher publisher = Domain.Publisher.Publisher.Create(request.PublisherId, request.FirstName, request.LastName);
+        Domain.Publisher.Publisher publisher = Domain.Publisher.Publisher.Create(request.PublisherId, request.FirstName, request.LastName, request.Email);
 
         publisherRepository.Insert(publisher);
 

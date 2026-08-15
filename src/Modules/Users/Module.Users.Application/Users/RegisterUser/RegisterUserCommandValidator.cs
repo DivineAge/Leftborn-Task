@@ -9,6 +9,7 @@ internal sealed class RegisterUserCommandValidator : AbstractValidator<RegisterU
     {
         RuleFor(c => c.FirstName).NotEmpty();
         RuleFor(c => c.LastName).NotEmpty();
+        RuleFor(c => c.Email).NotEmpty().Matches(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
 
     }
 }

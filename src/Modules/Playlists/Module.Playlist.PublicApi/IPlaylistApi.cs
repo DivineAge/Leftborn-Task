@@ -8,6 +8,7 @@ public interface IPlaylistApi
     Guid userId,
     string firstName,
     string lastName,
+    string email,
     CancellationToken cancellationToken = default);
 
     Task CreateSongAsync(

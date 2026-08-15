@@ -12,22 +12,26 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, ISongsApi public
 {
     public async Task<Result<Guid>> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
+        User? emailExists = await userRepository.GetByEmailAsync(command.Email, cancellationToken);
 
-        var user = User.Create(command.FirstName, command.LastName);
+        if (emailExists is not null)
+        {
+            return (Result<Guid>)Result.Failure(UserError.EmailAlreadyExists(command.Email));
+        }
 
-        
+        var user = User.Create(command.FirstName, command.LastName, command.Email);
 
         try
         {
             await unitOfWork.BeginTransactionAsync(cancellationToken);
-            
+
             userRepository.Insert(user);
-            
+
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            await publicApi.CreatePublisherAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
+            await publicApi.CreatePublisherAsync(user.Id, user.FirstName, user.LastName, command.Email, cancellationToken);
 
-            await playlistApi.CreateUserAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
+            await playlistApi.CreateUserAsync(user.Id, user.FirstName, user.LastName, command.Email, cancellationToken);
 
             await unitOfWork.CommitTransactionAsync(cancellationToken);
 
@@ -37,7 +41,8 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, ISongsApi public
         {
             await unitOfWork.RollbackTransactionAsync(cancellationToken);
             throw;
-        };
+        }
+        ;
 
     }
 }

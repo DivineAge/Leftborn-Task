@@ -2,7 +2,7 @@ using Test.Common.Domain;
 
 namespace Module.Playlist.Domain.Users;
 
-public sealed class User 
+public sealed class User
 {
 
     private User()
@@ -12,14 +12,16 @@ public sealed class User
     public Guid Id { get; private set; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
+    public string Email { get; private set; }
 
-    public static User Create(Guid id, string firstName, string lastName)
+    public static User Create(Guid id, string firstName, string lastName, string email)
     {
         return new User
         {
             Id = id,
             FirstName = firstName,
-            LastName = lastName
+            LastName = lastName,
+            Email = email
         };
     }
     public void Update(string firstName, string lastName)

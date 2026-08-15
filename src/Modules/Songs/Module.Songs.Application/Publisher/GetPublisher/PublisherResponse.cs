@@ -7,5 +7,6 @@ internal sealed record PublisherResponse
 (
     Guid PublisherId,
     string FirstName,
-    string LastName
+    string LastName,
+    string Email
 );

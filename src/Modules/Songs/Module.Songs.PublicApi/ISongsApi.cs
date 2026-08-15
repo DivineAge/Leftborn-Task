@@ -7,6 +7,7 @@ public interface ISongsApi
     Guid publisherId,
     string firstName,
     string lastName,
+    string email,
     CancellationToken cancellationToken = default);
 
     Task UpdatePublisherAsync(
