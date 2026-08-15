@@ -17,5 +17,10 @@ public interface IPlaylistApi
     string name,
     CancellationToken cancellationToken = default);
 
+    Task UpdateUserAsync(
+    Guid userId,
+    string firstName,
+    string lastName,
+    CancellationToken cancellationToken = default);
 
 }

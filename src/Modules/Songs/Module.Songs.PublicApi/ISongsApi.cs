@@ -8,5 +8,11 @@ public interface ISongsApi
     string firstName,
     string lastName,
     CancellationToken cancellationToken = default);
+
+    Task UpdatePublisherAsync(
+    Guid publisherId,
+    string firstName,
+    string lastName,
+    CancellationToken cancellationToken = default);
 }
 

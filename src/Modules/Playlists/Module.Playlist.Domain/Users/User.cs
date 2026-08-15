@@ -2,7 +2,7 @@ using Test.Common.Domain;
 
 namespace Module.Playlist.Domain.Users;
 
-public sealed class User : Entity
+public sealed class User 
 {
 
     private User()

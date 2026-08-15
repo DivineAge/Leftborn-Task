@@ -2,6 +2,7 @@ using MediatR;
 using Module.Playlist.Application.Songs.CreateSong;
 using Module.Playlist.Application.User.CreateUser;
 using Module.Playlist.PublicApi;
+using Module.Playlist.Application.User.UpdateUser;
 
 namespace Module.Playlist.Infrastructure.PublicApi
 {
@@ -28,6 +29,17 @@ namespace Module.Playlist.Infrastructure.PublicApi
             catch (Exception ex)
             {
                 throw new Exception($"Failed to create user: {ex.Message}", ex);
+            }
+        }
+        public async Task UpdateUserAsync(Guid userId, string firstName, string lastName, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                await sender.Send(new UpdateUserCommand(userId, firstName, lastName), cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to update user: {ex.Message}", ex);
             }
         }
     }

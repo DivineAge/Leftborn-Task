@@ -1,7 +1,7 @@
 using MediatR;
 using Module.Songs.Application.Publisher.CreatePubliser;
+using Module.Songs.Application.Publisher.UpdatePublisher;
 using Module.Songs.PublicApi;
-using static MassTransit.ValidationResultExtensions;
 
 namespace Module.Songs.Infrastructure.PublicApi;
 
@@ -19,5 +19,16 @@ internal class SongsApi(ISender sender) : ISongsApi
         }
 
 
+    }
+    public async Task UpdatePublisherAsync(Guid publisherId, string firstName, string lastName, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await sender.Send(new UpdatePublisherCommand(publisherId, firstName, lastName), cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Failed to update publisher: {ex.Message}", ex);
+        }
     }
 }
