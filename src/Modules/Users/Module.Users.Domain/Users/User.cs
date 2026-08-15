@@ -2,7 +2,7 @@ using Test.Common.Domain;
 
 namespace Module.Users.Domain.Users;
 
-public sealed class User : Entity
+public sealed class User
 {
 
     private User()
@@ -21,7 +21,6 @@ public sealed class User : Entity
             FirstName = firstName,
             LastName = lastName
         };
-        user.Raise(new UserRegisterDomainEvent(user.Id));
         return user;
     }
     public void Update(string firstName, string lastName)

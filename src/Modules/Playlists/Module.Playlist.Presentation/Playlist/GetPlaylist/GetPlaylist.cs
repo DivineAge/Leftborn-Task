@@ -1,4 +1,3 @@
-
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +7,6 @@ using Test.Common.Presentation.Endpoints;
 using Test.Common.Domain;
 using Module.Playlist.Application.PlaylistSongs.GetUserPlaylist;
 
-using Microsoft.AspNetCore.Mvc;
 namespace Module.Playlist.Presentation.Playlist.GetPlaylist;
 
 internal sealed class GetPlaylist : IEndpoint

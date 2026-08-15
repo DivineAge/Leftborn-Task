@@ -3,7 +3,7 @@ using Test.Common.Domain;
 
 namespace Module.Songs.Domain.Songs;
 
-public sealed class Song : Entity
+public sealed class Song
 {
     private Song()
     {
@@ -25,7 +25,7 @@ public sealed class Song : Entity
             TimeInSeconds = timeInSeconds,
             Name = name
         };
-        song.Raise(new SongCreatedDomainEvent(song.Id));
+
         return song;
     }
     public void Update(int timeInSeconds, string name)
@@ -36,11 +36,5 @@ public sealed class Song : Entity
         }
         TimeInSeconds = timeInSeconds;
         Name = name;
-        Raise(new SongUpdatedDomainEvent(this.Id, name, timeInSeconds));
-    }
-
-    public void Delete()
-    {
-        Raise(new SongDeletedDomainEvent(this.Id));
     }
 }

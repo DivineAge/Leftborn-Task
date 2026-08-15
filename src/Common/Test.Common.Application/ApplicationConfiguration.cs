@@ -3,6 +3,7 @@
 using System.Reflection;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Test.Common.Application.Behaviors;
 
 namespace Test.Common.Application;
 
@@ -13,6 +14,8 @@ public static class ApplicationConfiguration
         services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssemblies(assemblies);
+
+            config.AddOpenBehavior(typeof(ValidationPipelineBehavior<,>));
 
 
         });
