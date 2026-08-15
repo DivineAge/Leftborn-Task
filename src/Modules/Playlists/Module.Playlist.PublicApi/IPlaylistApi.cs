@@ -23,4 +23,11 @@ public interface IPlaylistApi
     string lastName,
     CancellationToken cancellationToken = default);
 
+    Task UpdateSongAsync(
+    Guid songId,
+    Guid publisherId,
+    int timeInSeconds,
+    string name,
+    CancellationToken cancellationToken = default);
+
 }

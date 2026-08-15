@@ -22,14 +22,28 @@ internal sealed class UpdateUserCommandHandler(
         {
             return Result.Failure(UserError.NotFound(request.UserId));
         }
+        
+        
+        try
+        {
+            await unitOfWork.BeginTransactionAsync(cancellationToken);
 
-        user.Update(request.FirstName, request.LastName);
+            user.Update(request.FirstName, request.LastName);
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        await publicApi.UpdatePublisherAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
-        await  playlistApi.UpdateUserAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
+            await publicApi.UpdatePublisherAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
 
-        return Result.Success();
+            await playlistApi.UpdateUserAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
+
+            await unitOfWork.CommitTransactionAsync(cancellationToken);
+
+            return Result.Success();
+        }
+        catch
+        {
+            await unitOfWork.RollbackTransactionAsync(cancellationToken);
+            throw ;
+        }
     }
 }

@@ -3,8 +3,6 @@ using Module.Songs.Domain.Publisher;
 using Microsoft.EntityFrameworkCore;
 using Module.Songs.Application.Abstractions.Data;
 using Module.Songs.Infrastructure.Publishers;
-using System.Data.Common;
-using Microsoft.EntityFrameworkCore.Storage;
 using Module.Songs.Domain.Songs;
 using Module.Songs.Infrastructure.Songs;
 
@@ -26,13 +24,34 @@ public sealed class SongsDbContext(DbContextOptions<SongsDbContext> options) : D
         modelBuilder.ApplyConfiguration(new SongConfiguration());
     }
 
-    public async Task<DbTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
     {
         if (Database.CurrentTransaction is not null)
         {
             await Database.CurrentTransaction.DisposeAsync();
         }
 
-        return (await Database.BeginTransactionAsync(cancellationToken)).GetDbTransaction();
+        await Database.BeginTransactionAsync(cancellationToken);
+        
+    }
+
+    public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        if (Database.CurrentTransaction is null)
+        {
+            return;
+        }
+
+        await Database.CurrentTransaction.CommitAsync(cancellationToken);
+    }
+
+    public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        if (Database.CurrentTransaction is null)
+        { 
+            return;
+        }
+
+        await Database.CurrentTransaction.RollbackAsync(cancellationToken);
     }
 }

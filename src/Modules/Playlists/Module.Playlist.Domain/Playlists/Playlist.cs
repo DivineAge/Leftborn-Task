@@ -23,5 +23,15 @@ public sealed class Playlist
 
         return playlist;
     }
+    public void Update(string name , Guid ownerId)
+    {
+        if(OwnerId == ownerId && Name == name)
+        {
+            return;
+        }
+        Name = name;
+        OwnerId = ownerId;
+    }
+    
 
 }

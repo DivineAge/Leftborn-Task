@@ -21,6 +21,15 @@ public sealed class PlaylistSong
 
         return playlistSong;
     }
+    public void Update(Guid playlistId, Guid songId)
+    {
+        if(PlaylistId == playlistId && SongId == songId)
+        {
+            return;
+        }
+        PlaylistId = playlistId;
+        SongId = songId;
+    }
 
 
 }

@@ -1,4 +1,3 @@
-
 using Module.Playlist.Application.Abstractions.Data;
 using Module.Playlist.Domain.Playlists;
 using Module.Playlist.Domain.PlaylistSongs;
@@ -35,7 +34,17 @@ internal sealed class AddSongCommandHandler(
             return Result.Failure(PlaylistErrors.NotPlaylistOwner(request.OwnerId, request.PlaylistId));
         }
 
+
         PlaylistSong playlistSong = PlaylistSong.Create(request.PlaylistId, request.SongId);
+        
+        PlaylistSong? existingPlaylistSong = await playlistSongsRepository.GetAsync(request.PlaylistId, request.SongId, cancellationToken);
+
+        if(existingPlaylistSong is not null)
+        {
+            return Result.Failure(PlaylistSongsErrors.AlreadyExists(request.PlaylistId, request.SongId));
+        }
+
+        
 
         playlistSongsRepository.Insert(playlistSong);
 
