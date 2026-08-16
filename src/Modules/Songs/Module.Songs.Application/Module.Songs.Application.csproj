@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -12,6 +12,10 @@
     <ProjectReference Include="..\..\Playlists\Module.Playlist.PublicApi\Module.Playlist.PublicApi.csproj" />
     <ProjectReference Include="..\..\Users\Module.Users.PublicApi\Module.Users.PublicApi.csproj" />
     <ProjectReference Include="..\Module.Songs.Domain\Module.Songs.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Luftborn-Task.UnitTests" />
   </ItemGroup>
 
 </Project>

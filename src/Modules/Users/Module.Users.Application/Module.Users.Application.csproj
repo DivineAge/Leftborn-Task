@@ -17,4 +17,8 @@
     <PackageReference Include="Dapper" Version="2.1.79" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Luftborn-Task.UnitTests" />
+  </ItemGroup>
+
 </Project>
