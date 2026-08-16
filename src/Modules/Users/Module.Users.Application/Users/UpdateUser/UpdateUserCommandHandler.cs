@@ -20,7 +20,7 @@ internal sealed class UpdateUserCommandHandler(
 
         if (user is null)
         {
-            return Result.Failure(UserError.NotFound(request.UserId));
+            return Result.Failure(UserErrors.NotFound(request.UserId));
         }
         
         

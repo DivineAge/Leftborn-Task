@@ -21,7 +21,7 @@ internal sealed class DeleteUserCommandHandler(
 
         if (user is null)
         {
-            return Result.Failure(UserError.NotFound(command.Id));
+            return Result.Failure(UserErrors.NotFound(command.Id));
         }
 
 

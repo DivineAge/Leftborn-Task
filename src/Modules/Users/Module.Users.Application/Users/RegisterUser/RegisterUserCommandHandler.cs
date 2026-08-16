@@ -16,7 +16,7 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, ISongsApi public
 
         if (emailExists is not null)
         {
-            return Result.Failure<Guid>(UserError.EmailAlreadyExists(command.Email));
+            return Result.Failure<Guid>(UserErrors.EmailAlreadyExists(command.Email));
         }
 
         var user = User.Create(command.FirstName, command.LastName, command.Email);
