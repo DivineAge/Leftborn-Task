@@ -14,7 +14,10 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
         .Build();
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        Environment.SetEnvironmentVariable("ConnectionStrings:Database", _dbcontainer.GetConnectionString());
+        string connectionString = _dbcontainer.GetConnectionString();
+        Environment.SetEnvironmentVariable("ConnectionStrings:Database", connectionString);
+        Environment.SetEnvironmentVariable("ConnectionStrings__Database", connectionString);
+        builder.UseSetting("ConnectionStrings:Database", connectionString);
         builder.ConfigureTestServices(services =>
         {
 

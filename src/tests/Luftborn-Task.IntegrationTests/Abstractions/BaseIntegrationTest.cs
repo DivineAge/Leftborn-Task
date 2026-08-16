@@ -7,8 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Luftborn_Task.IntegrationTests.Abstractions;
 
-[CollectionDefinition(nameof(IntegrationTestCollection))]
-public class BaseIntegrationTest : IDisposable
+[Collection(nameof(IntegrationTestCollection))]
+public abstract class BaseIntegrationTest : IDisposable
 {
     protected static readonly Faker Faker = new();
     private readonly IServiceScope _scope;

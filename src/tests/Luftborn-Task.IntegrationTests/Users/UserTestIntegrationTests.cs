@@ -1,17 +1,18 @@
 
 using Luftborn_Task.IntegrationTests.Abstractions;
-using Module.Playlist.Domain.Users;
+using Module.Users.Domain.Users;
 using Module.Users.Application.Users.GetUser;
 using Test.Common.Domain;
 namespace Luftborn_Task.IntegrationTests.Users;
 
 using FluentAssertions;
-using Module.Playlist.Application.User.DeleteUser;
+using Module.Users.Application.Users.DeleteUser;
 using Module.Users.Application.Users.RegisterUser;
+using Module.Users.Application.Users.UpdateUser;
 
-public class UserTestIntegrationTests : BaseIntegrationTest, IClassFixture<IntegrationTestWebAppFactory>
+public class UserTestIntegrationTests : BaseIntegrationTest
 {
-    protected UserTestIntegrationTests(IntegrationTestWebAppFactory factory) : base(factory)
+    public UserTestIntegrationTests(IntegrationTestWebAppFactory factory) : base(factory)
     {
     }
     [Fact]
@@ -58,5 +59,39 @@ public class UserTestIntegrationTests : BaseIntegrationTest, IClassFixture<Integ
         // Assert
         response.IsSuccess.Should().BeTrue();
 
+    }
+
+    [Fact]
+    public async Task Should_ReturnSuccess_WhenUpdateUser()
+    {
+        // Arrange
+        Result<Guid> result = await Sender.Send(new RegisterUserCommand(Faker.Name.FirstName(), Faker.Name.LastName(), Faker.Internet.Email()));
+        Guid userId = result.Value;
+        string updatedFirstName = Faker.Name.FirstName();
+        string updatedLastName = Faker.Name.LastName();
+
+        // Act
+        Result updateResult = await Sender.Send(new UpdateUserCommand(userId, updatedFirstName, updatedLastName));
+
+        // Assert
+        updateResult.IsSuccess.Should().BeTrue();
+
+        Result<UserResponse> response = await Sender.Send(new GetUserQuery(userId));
+        response.IsSuccess.Should().BeTrue();
+        response.Value.FirstName.Should().Be(updatedFirstName);
+        response.Value.LastName.Should().Be(updatedLastName);
+    }
+
+    [Fact]
+    public async Task Should_ReturnError_WhenUpdateUser_WhenUserDoesNotExist()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+
+        // Act
+        Result updateResult = await Sender.Send(new UpdateUserCommand(userId, Faker.Name.FirstName(), Faker.Name.LastName()));
+
+        // Assert
+        updateResult.Error.Should().Be(UserError.NotFound(userId));
     }
 }
