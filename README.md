@@ -6,7 +6,7 @@ The easiest way to run Luftborn Task locally is with Docker Compose.
 
 ### Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) and Docker Compose.
+- Docker and Docker Compose.
 - .NET SDK.
 
 ### 1. Clone the repository
@@ -32,7 +32,65 @@ Install the `dotnet-ef` tool before applying the database migrations:
 dotnet tool install --global dotnet-ef
 ```
 
-### 4. Access the application
+### 4. Create the database schemas and tables
+
+Run the following commands from the **root directory of the project** after starting Docker Compose. The database services must be running before applying the Entity Framework Core migrations.
+
+```bash
+dotnet ef migrations add migrations \
+  --project src/Modules/Songs/Module.Songs.Infrastructure/Module.Songs.Infrastructure.csproj \
+  --startup-project src/API/API.csproj \
+  --context SongsDbContext \
+  --output-dir Database/Migrations
+```
+
+```bash
+dotnet ef migrations update \
+  --project src/Modules/Playlists/Module.Playlist.Infrastructure/Module.Playlist.Infrastructure.csproj \
+  --startup-project src/API/API.csproj \
+  --context PlaylistDbContext \
+  --output-dir Database/Migrations
+```
+
+```bash
+dotnet ef migrations add migrations \
+  --project src/Modules/Users/Module.Users.Infrastructure/Module.Users.Infrastructure.csproj \
+  --startup-project src/API/API.csproj \
+  --context UsersDbContext \
+  --output-dir Database/Migrations
+```
+
+### 5. Recreate migrations if necessary
+
+If the migrations are missing or corrupted, you can delete the existing migration files and recreate them from the **root directory of the project** using the following commands:
+
+```bash
+dotnet ef migrations add migrations \
+  --project src/Modules/Songs/Module.Songs.Infrastructure/Module.Songs.Infrastructure.csproj \
+  --startup-project src/API/API.csproj \
+  --context UsersDbContext \
+  --output-dir Database/Migrations
+```
+
+```bash
+dotnet ef migrations add migrations \
+  --project src/Modules/Playlists/Module.Playlist.Infrastructure/Module.Playlist.Infrastructure.csproj \
+  --startup-project src/API/API.csproj \
+  --context PlaylistDbContext \
+  --output-dir Database/Migrations
+```
+
+```bash
+dotnet ef migrations add migrations \
+  --project src/Modules/Users/Module.Users.Infrastructure/Module.Users.Infrastructure.csproj \
+  --startup-project src/API/API.csproj \
+  --context UsersDbContext \
+  --output-dir Database/Migrations
+```
+
+> Only delete migration files if they are genuinely missing or corrupted. Recreating migrations may require a database reset or additional cleanup if the existing database already contains migration history.
+
+### 6. Access the application
 
 The backend API is available at:
 
@@ -105,39 +163,40 @@ PostgreSQL is a strong fit for Luftborn Task because it provides reliable relati
 
 ### Users
 
-| Column      | Type     | Description                                    |
-| ----------- | -------- | ---------------------------------------------- |
-| `Id`        | `Guid`   | Primary key that uniquely identifies the user. |
-| `FirstName` | `string` | User's first name.                             |
-| `LastName`  | `string` | User's last name.                              |
+| Column | Type | Description |
+| --- | --- | --- |
+| `Id` | `Guid` | Primary key that uniquely identifies the user. |
+| `FirstName` | `string` | User's first name. |
+| `LastName` | `string` | User's last name. |
+| `Email` | `string` | User's email address. |
 
 ### Songs
 
-| Column          | Type     | Description                                                        |
-| --------------- | -------- | ------------------------------------------------------------------ |
-| `Id`            | `Guid`   | Primary key that uniquely identifies the song.                     |
-| `PublisherId`   | `Guid`   | Foreign key referencing `Users.Id`. A user can publish many songs. |
-| `Name`          | `string` | Song name.                                                         |
-| `TimeInSeconds` | `string` | Song duration in seconds.                                          |
+| Column | Type | Description |
+| --- | --- | --- |
+| `Id` | `Guid` | Primary key that uniquely identifies the song. |
+| `PublisherId` | `Guid` | Foreign key referencing `Users.Id`. A user can publish many songs. |
+| `Name` | `string` | Song name. |
+| `TimeInSeconds` | `string` | Song duration in seconds. |
 
 The relationship between users and songs is one-to-many: one user can publish multiple songs, while each song belongs to one publisher.
 
 ### Playlists
 
-| Column    | Type     | Description                                                            |
-| --------- | -------- | ---------------------------------------------------------------------- |
-| `Id`      | `Guid`   | Primary key that uniquely identifies the playlist.                     |
-| `OwnerId` | `Guid`   | Foreign key referencing `Users.Id`. A user can own multiple playlists. |
-| `Name`    | `string` | Playlist name.                                                         |
+| Column | Type | Description |
+| --- | --- | --- |
+| `Id` | `Guid` | Primary key that uniquely identifies the playlist. |
+| `OwnerId` | `Guid` | Foreign key referencing `Users.Id`. A user can own multiple playlists. |
+| `Name` | `string` | Playlist name. |
 
 The relationship between users and playlists is one-to-many: one user can own multiple playlists, while each playlist has one owner.
 
 ### PlaylistSongs
 
-| Column       | Type   | Description                             |
-| ------------ | ------ | --------------------------------------- |
+| Column | Type | Description |
+| --- | --- | --- |
 | `PlaylistId` | `Guid` | Foreign key referencing `Playlists.Id`. |
-| `SongId`     | `Guid` | Foreign key referencing `Songs.Id`.     |
+| `SongId` | `Guid` | Foreign key referencing `Songs.Id`. |
 
 `PlaylistSongs` is a junction table representing the many-to-many relationship between playlists and songs. Its composite primary key prevents the same song from being added to the same playlist more than once.
 
