@@ -26,7 +26,7 @@ public class SongsIntegrationsTests : BaseIntegrationTest
 
         // Assert
 
-        response.Error.Should().Be(SongError.NotFound(songId));
+        response.Error.Should().Be(SongErrors.NotFound(songId));
     }
 
     [Fact]
@@ -81,6 +81,6 @@ public class SongsIntegrationsTests : BaseIntegrationTest
         Result updateResult = await Sender.Send(new UpdateSongCommand(songId, publisherId, Faker.Name.FirstName(), Faker.Random.Number(1, 1000)));
 
         // Assert
-        updateResult.Error.Should().Be(SongError.NotFound(songId));
+        updateResult.Error.Should().Be(SongErrors.NotFound(songId));
     }
 }

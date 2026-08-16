@@ -26,7 +26,7 @@ public class UserTestIntegrationTests : BaseIntegrationTest
 
         // Assert
 
-        response.Error.Should().Be(UserError.NotFound(userId));
+        response.Error.Should().Be(UserErrors.NotFound(userId));
 
 
     }
@@ -92,6 +92,6 @@ public class UserTestIntegrationTests : BaseIntegrationTest
         Result updateResult = await Sender.Send(new UpdateUserCommand(userId, Faker.Name.FirstName(), Faker.Name.LastName()));
 
         // Assert
-        updateResult.Error.Should().Be(UserError.NotFound(userId));
+        updateResult.Error.Should().Be(UserErrors.NotFound(userId));
     }
 }
