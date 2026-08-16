@@ -6,8 +6,8 @@ The easiest way to run Luftborn Task locally is with Docker Compose.
 
 ### Prerequisites
 
-- Docker and Docker Compose.
-- .NET SDK with the Entity Framework Core CLI installed.
+- [Docker](https://docs.docker.com/get-docker/) and Docker Compose.
+- .NET SDK.
 
 ### 1. Clone the repository
 
@@ -16,9 +16,25 @@ git clone <repository-url>
 cd <repository-directory>
 ```
 
-### 2. Create the databases
+### 2. Start the application
 
-Run these commands from the **root directory of the project** before starting Docker Compose. They apply the Entity Framework Core migrations and create the required module databases.
+Build the images and start the services in the background:
+
+```bash
+docker compose up --build -d
+```
+
+### 3. Install the Entity Framework Core CLI
+
+Install the `dotnet-ef` tool before applying the database migrations:
+
+```bash
+dotnet tool install --global dotnet-ef
+```
+
+### 4. Create the database schemas and tables
+
+Run the following commands from the **root directory of the project** after starting Docker Compose. The database services must be running before applying the Entity Framework Core migrations.
 
 ```bash
 dotnet ef database update \
@@ -41,15 +57,7 @@ dotnet ef database update \
   --context SongsDbContext
 ```
 
-### 3. Start the application
-
-Build the images and start the services in the background:
-
-```bash
-docker compose up --build -d
-```
-
-### 4. Access the application
+### 5. Access the application
 
 The backend API is available at:
 
