@@ -15,7 +15,7 @@ internal sealed class DeleteUser : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/api/users/{id:guid}", async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+        app.MapDelete("/users/{id:guid}", async (Guid id, ISender sender, CancellationToken cancellationToken) =>
          {
              Result result = await sender.Send(new DeleteUserCommand(id), cancellationToken);
 
