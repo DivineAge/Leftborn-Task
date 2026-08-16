@@ -14,7 +14,7 @@ internal sealed class GetPublisherSongs : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("songs/publishers/{publisherId}", async (Guid publisherId, ISender sender) =>
+        app.MapGet("/songs/publishers/{publisherId}", async (Guid publisherId, ISender sender) =>
         {
             Result<IEnumerable<SongResponse>> result = await sender.Send(new GetPublisherSongsQuery(publisherId));
 

@@ -14,7 +14,7 @@ internal sealed class DeleteSong() : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/api/songs/{songId:guid}", async ([FromRoute] Guid songId, ISender sender) =>
+        app.MapDelete("/songs/{songId:guid}", async ([FromRoute] Guid songId, ISender sender) =>
         {
             Result result = await sender.Send(new DeleteSongCommand(songId));
 

@@ -17,7 +17,7 @@ internal sealed class UpdateSong() : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("/api/songs/id/{id}", async ([FromRoute] Guid id,[FromBody] Request request, ISender sender, CancellationToken cancellationToken) =>
+        app.MapPut("/songs/id/{id}", async ([FromRoute] Guid id,[FromBody] Request request, ISender sender, CancellationToken cancellationToken) =>
         {
             Result result = await sender.Send(new UpdateSongCommand( id, request.PublisherId, request.Name, request.TimeInSeconds), cancellationToken);
 
