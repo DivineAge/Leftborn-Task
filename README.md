@@ -32,32 +32,7 @@ Install the `dotnet-ef` tool before applying the database migrations:
 dotnet tool install --global dotnet-ef
 ```
 
-### 4. Create the database schemas and tables
-
-Run the following commands from the **root directory of the project** after starting Docker Compose. The database services must be running before applying the Entity Framework Core migrations.
-
-```bash
-dotnet ef database update \
-  --project src/Modules/Songs/Module.Songs.Infrastructure/Module.Songs.Infrastructure.csproj \
-  --startup-project src/API/API.csproj \
-  --context SongsDbContext
-```
-
-```bash
-dotnet ef database update \
-  --project src/Modules/Playlists/Module.Playlist.Infrastructure/Module.Playlist.Infrastructure.csproj \
-  --startup-project src/API/API.csproj \
-  --context PlaylistDbContext
-```
-
-```bash
-dotnet ef database update \
-  --project src/Modules/Users/Module.Users.Infrastructure/Module.Users.Infrastructure.csproj \
-  --startup-project src/API/API.csproj \
-  --context SongsDbContext
-```
-
-### 5. Access the application
+### 4. Access the application
 
 The backend API is available at:
 
