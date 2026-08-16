@@ -19,7 +19,7 @@ IPublisherRepository publisherRepository,
         Song? song = await songRepository.GetAsync(request.SongId, cancellationToken);
         if (song is null)
         {
-            return Result.Failure(SongError.NotFound(request.SongId));
+            return Result.Failure(SongErrors.NotFound(request.SongId));
         }
 
         Domain.Publisher.Publisher? publisher = await publisherRepository.GetAsync(request.PublisherId, cancellationToken);

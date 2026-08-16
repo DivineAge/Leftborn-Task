@@ -18,7 +18,7 @@ internal sealed class DeleteSongCommandHandler(IPlaylistApi playlistApi, ISongRe
 
         if (song is null)
         {
-            return Result.Failure(SongError.NotFound(command.Id));
+            return Result.Failure(SongErrors.NotFound(command.Id));
         }
 
 

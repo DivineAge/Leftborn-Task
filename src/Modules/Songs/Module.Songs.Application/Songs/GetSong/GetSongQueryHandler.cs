@@ -29,7 +29,7 @@ internal sealed class GetSongQueryHandler(IDbConnectionFactory dbConnectionFacto
 
         if (song is null)
         {
-            return Result.Failure<SongResponse>(SongError.NotFound(request.Id));
+            return Result.Failure<SongResponse>(SongErrors.NotFound(request.Id));
         }
 
         return song;

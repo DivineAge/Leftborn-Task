@@ -11,10 +11,10 @@ using Test.Common.Domain;
 namespace Module.Songs.Application.Songs.GetSongByName;
 
 internal sealed class GetSongByNameQueryHandler(IDbConnectionFactory dbConnectionFactory)
-    : IQueryHandler<GetSongByNameQuery, SongResponse>
+    : IQueryHandler<GetSongByNameQuery, IEnumerable<SongResponse>>
 {
 
-    public async Task<Result<SongResponse>> Handle(GetSongByNameQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<SongResponse>>> Handle(GetSongByNameQuery request, CancellationToken cancellationToken)
     {
         await using DbConnection connection = await dbConnectionFactory.CreateDbConnectionAsync();
         const string sql =
@@ -28,14 +28,15 @@ internal sealed class GetSongByNameQueryHandler(IDbConnectionFactory dbConnectio
             WHERE "Name" = @Name
             """;
 
-        SongResponse? song = await connection.QuerySingleOrDefaultAsync<SongResponse>(sql, request);
+        IEnumerable<SongResponse> songs = await connection.QueryAsync<SongResponse>(sql, request);
+        List<SongResponse> list = songs.ToList();
 
-        if (song is null)
+        if (list.Count == 0)
         {
-            return Result.Failure<SongResponse>(SongError.NotFound(request.Name));
+            return Result.Failure<IEnumerable<SongResponse>>(SongErrors.NotFound(request.Name));
         }
 
-        return Result.Success(song);
+        return list;
     }
 
 }
