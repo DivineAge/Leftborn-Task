@@ -31,4 +31,12 @@ public interface IPlaylistApi
     string name,
     CancellationToken cancellationToken = default);
 
+    Task DeleteUserAsync(
+    Guid userId,
+    CancellationToken cancellationToken = default);
+
+    Task DeleteSongAsync(
+    Guid songId,
+    CancellationToken cancellationToken = default);
+
 }

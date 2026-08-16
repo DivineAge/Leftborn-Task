@@ -8,7 +8,7 @@ using Test.Common.Domain;
 
 namespace Module.Songs.Application.Songs.UpdateSong;
 
-internal sealed  class UpdateSongCommandHandler(ISongRepository songRepository,
+internal sealed class UpdateSongCommandHandler(ISongRepository songRepository,
 IPlaylistApi playlistApi,
 IPublisherRepository publisherRepository,
  IUnitOfWork unitOfWork) : ICommandHandler<UpdateSongCommand>
@@ -25,7 +25,7 @@ IPublisherRepository publisherRepository,
         Domain.Publisher.Publisher? publisher = await publisherRepository.GetAsync(request.PublisherId, cancellationToken);
         if (publisher is null)
         {
-            return Result.Failure(PublisherError.NotFound(request.PublisherId));
+            return Result.Failure(PublisherErrors.NotFound(request.PublisherId));
         }
 
         try
@@ -44,7 +44,7 @@ IPublisherRepository publisherRepository,
         catch
         {
             await unitOfWork.RollbackTransactionAsync(cancellationToken);
-            throw ;
+            throw;
         }
 
         return Result.Success();

@@ -15,15 +15,15 @@ internal sealed class CreateSongCommandHandler(ISongRepository songRepository, I
         Domain.Publisher.Publisher? publisher = await publisherRepository.GetAsync(request.PublisherId, cancellationToken);
         if (publisher is null)
         {
-            return Result.Failure<Guid>(PublisherError.NotFound(request.PublisherId));
+            return Result.Failure<Guid>(PublisherErrors.NotFound(request.PublisherId));
         }
         Song song = Song.Create(request.PublisherId, request.TimeInSeconds, request.Name);
 
-        
-        
+
+
 
         try
-        {      
+        {
             await unitOfWork.BeginTransactionAsync(cancellationToken);
 
             songRepository.Insert(song);

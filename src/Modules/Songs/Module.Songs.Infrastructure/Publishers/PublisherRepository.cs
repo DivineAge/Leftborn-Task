@@ -6,6 +6,11 @@ namespace Module.Songs.Infrastructure.Publishers;
 
 public class PublisherRepository(SongsDbContext dbContext) : IPublisherRepository
 {
+    public void Delete(Publisher publisher)
+    {
+        dbContext.Publishers.Remove(publisher);
+    }
+
     public async Task<Publisher?> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await dbContext.Publishers.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);

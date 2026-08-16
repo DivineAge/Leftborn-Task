@@ -7,6 +7,7 @@ The easiest way to run Luftborn Task locally is with Docker Compose.
 ### Prerequisites
 
 - Docker and Docker Compose.
+- .NET SDK with the Entity Framework Core CLI installed.
 
 ### 1. Clone the repository
 
@@ -15,7 +16,32 @@ git clone <repository-url>
 cd <repository-directory>
 ```
 
-### 2. Start the application
+### 2. Create the databases
+
+Run these commands from the **root directory of the project** before starting Docker Compose. They apply the Entity Framework Core migrations and create the required module databases.
+
+```bash
+dotnet ef database update \
+  --project src/Modules/Songs/Module.Songs.Infrastructure/Module.Songs.Infrastructure.csproj \
+  --startup-project src/API/API.csproj \
+  --context SongsDbContext
+```
+
+```bash
+dotnet ef database update \
+  --project src/Modules/Playlists/Module.Playlist.Infrastructure/Module.Playlist.Infrastructure.csproj \
+  --startup-project src/API/API.csproj \
+  --context Playlist
+```
+
+```bash
+dotnet ef database update \
+  --project src/Modules/Users/Module.Users.Infrastructure/Module.Users.Infrastructure.csproj \
+  --startup-project src/API/API.csproj \
+  --context SongsDbContext
+```
+
+### 3. Start the application
 
 Build the images and start the services in the background:
 
@@ -23,7 +49,7 @@ Build the images and start the services in the background:
 docker compose up --build -d
 ```
 
-### 3. Access the application
+### 4. Access the application
 
 The backend API is available at:
 
@@ -59,46 +85,40 @@ docker compose down
 
 ## Architecture design
 
-Luftborn Task is designed as a **modular monolith** that follows **Clean Architecture** principles. The application is deployed as a single system, but its business capabilities are separated into independent modules with clear boundaries and responsibilities.
+Luftborn Task is a **modular monolith** built using **Clean Architecture**. It runs as one application, while each business capability is separated into an independent module.
 
-### Modular monolith
+### Modular monolith and Clean Architecture
 
-Each module owns a specific business capability and is organized internally into its own application, domain, and infrastructure concerns. Modules can be developed and reasoned about independently while still running within the same deployable application.
+Each module owns a specific business capability and contains its own domain, application, and infrastructure layers. Dependencies point inward toward the business logic, keeping it independent from frameworks and persistence details.
 
-This approach provides many of the organizational benefits of microservices without introducing the operational complexity of multiple independently deployed services. It also keeps the application straightforward to run while preserving clear module boundaries.
-
-### Clean Architecture
-
-Each module follows a layered structure based on Clean Architecture:
-
-- **Domain:** Contains entities, value objects, business rules, and domain behavior. This layer does not depend on external frameworks or infrastructure.
-- **Application:** Contains use cases, commands, queries, interfaces, and application-specific business orchestration.
-- **Infrastructure:** Contains database access, external integrations, persistence implementations, and framework-specific details.
-- **API:** Exposes the module's functionality through the application and translates external requests into application use cases.
-
-Dependencies point inward toward the domain and application layers. This keeps the core business logic isolated from databases, frameworks, and external services, making the modules easier to test, maintain, and evolve.
+This provides clear module boundaries and many benefits of microservices without the deployment and operational complexity of multiple applications.
 
 ### Synchronous module communication
 
-Modules communicate synchronously through a shared public interface. This public API is an internal programming interface, not an HTTP endpoint or external web API.
+Modules communicate synchronously through internal public interfaces. These interfaces are not HTTP endpoints; their only purpose is to duplicate data that another module requires.
 
-The communication between modules has one specific purpose: duplicating the data required by another module. When a module creates or updates data that another module needs, it uses the relevant interface to provide that data synchronously. The receiving module stores its own local copy instead of querying the other module's database directly.
+The receiving module stores and uses its own local copy instead of accessing another module's database. This keeps modules self-contained and preserves independent data ownership.
 
-This approach keeps every module self-contained. After the required data has been duplicated, each module can perform its own operations using its local data without depending on another module's database or internal implementation.
+### Duplicated module data
 
-The interfaces therefore act as controlled synchronization boundaries. They allow data to be shared when necessary while preserving the modularity, ownership, and independent persistence of each module.
+Each module maintains its own database structure and required data. This prevents shared-table coupling and allows modules to change their schemas and persistence logic independently.
 
-### Self-contained modules and duplicated data
-
-To keep modules self-contained, each module maintains its own required copy of the data it uses. The database structure is therefore duplicated between modules rather than shared directly through a single common schema.
-
-This design gives each module clear ownership of its data and prevents tight coupling through shared tables or internal database queries. A module can change its schema, persistence logic, and migrations without requiring other modules to understand or modify its internal storage.
-
-The trade-off is that duplicated data must be kept consistent. When data changes, the responsible module should use the appropriate interface operation so that other modules can update their local copy through the defined contract. This makes ownership explicit and preserves the independence of each module.
+The main trade-off is data consistency: when data changes, the owning module must use the appropriate interface to update the copies maintained by other modules.
 
 ## Database structure
 
-The database uses a normalized relational design with four main entities: users, songs, playlists, and playlist-song relationships.
+The database uses PostgreSQL and a normalized relational design with four main entities: users, songs, playlists, and playlist-song relationships.
+
+### Why PostgreSQL?
+
+PostgreSQL is a strong fit for Luftborn Task because it provides reliable relational data management, powerful constraints, and excellent support for the relationships used by the application.
+
+- **Referential integrity:** Primary keys, foreign keys, and constraints protect relationships between users, songs, playlists, and playlist entries.
+- **Transaction support:** ACID-compliant transactions help ensure that related changes are completed consistently.
+- **Strong querying capabilities:** PostgreSQL efficiently supports joins, filtering, sorting, aggregation, and many-to-many queries.
+- **Good .NET integration:** It works well with Entity Framework Core and supports code-first migrations for each module.
+- **Reliability and scalability:** PostgreSQL is mature, open source, and suitable for both local development and production workloads.
+- **Independent module databases:** Each module can have its own PostgreSQL database while retaining the same reliable relational features.
 
 ### Users
 
@@ -136,17 +156,15 @@ The relationship between users and playlists is one-to-many: one user can own mu
 | `PlaylistId` | `Guid` | Foreign key referencing `Playlists.Id`. |
 | `SongId`     | `Guid` | Foreign key referencing `Songs.Id`.     |
 
-`PlaylistSongs` is a junction table that represents the many-to-many relationship between playlists and songs. A playlist can contain many songs, and a song can belong to many playlists. The combined `PlaylistId` and `SongId` columns form a composite primary key, preventing the same song from being added to the same playlist more than once.
+`PlaylistSongs` is a junction table representing the many-to-many relationship between playlists and songs. Its composite primary key prevents the same song from being added to the same playlist more than once.
 
 ## Why this structure is good
 
-- **Clear relationships:** Foreign keys make ownership and publishing relationships explicit and enforce referential integrity.
-- **Normalized data:** User, song, playlist, and relationship data are stored separately, reducing duplication and avoiding inconsistent updates within each module.
-- **Efficient many-to-many modeling:** The `PlaylistSongs` junction table is the standard relational approach for connecting playlists and songs.
-- **Duplicate prevention:** The composite primary key on `PlaylistSongs` prevents duplicate playlist-song associations.
-- **Scalable identifiers:** `Guid` primary keys provide globally unique identifiers that work well across distributed services and database environments.
-- **Flexible ownership:** Separate `PublisherId` and `OwnerId` fields allow a user to publish songs and own playlists independently.
-- **Module independence:** Local copies let modules query and update the data they need without directly accessing another module's database.
-- **Simple querying:** The structure supports straightforward queries such as retrieving a user's songs, finding playlists owned by a user, or listing all songs in a playlist.
+- **Clear relationships:** Foreign keys enforce ownership and publishing relationships.
+- **Normalized data:** Separate tables reduce duplication within each module.
+- **Many-to-many support:** `PlaylistSongs` efficiently connects playlists and songs.
+- **Duplicate prevention:** Its composite key prevents duplicate playlist-song associations.
+- **Module independence:** Local data copies prevent direct database coupling between modules.
+- **Scalable identifiers:** `Guid` keys provide globally unique identifiers.
 
-For production use, `TimeInSeconds` would generally be better stored as an integer type such as `int` rather than `string`. This makes duration sorting, filtering, validation, and arithmetic operations more reliable.
+For production use, `TimeInSeconds` would generally be better stored as an integer such as `int` rather than `string`. This makes validation, sorting, filtering, and calculations more reliable.

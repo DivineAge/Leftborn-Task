@@ -13,7 +13,7 @@ internal sealed class PlaylistSongConfiguration : IEntityTypeConfiguration<Playl
 
         builder.HasOne<Domain.Playlists.Playlist>().WithMany().HasForeignKey(x => x.PlaylistId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Song>().WithMany().HasForeignKey(x => x.SongId).HasPrincipalKey(p => p.Id);
+        builder.HasOne<Song>().WithMany().HasForeignKey(x => x.SongId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(x => x.PlaylistId)
             .IsRequired();

@@ -7,6 +7,11 @@ namespace Module.Users.Infrastructure.Users;
 
 internal sealed class UserRepository(UsersDbContext context) : IUserRepository
 {
+    public void Delete(User user)
+    {
+        context.Users.Remove(user);
+    }
+
     public async Task<User?> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await context.Users.SingleOrDefaultAsync(u => u.Id == id, cancellationToken);

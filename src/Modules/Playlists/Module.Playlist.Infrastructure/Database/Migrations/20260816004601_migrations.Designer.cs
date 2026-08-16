@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Module.Playlist.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(PlaylistDbContext))]
-    [Migration("20260815222646_InitialCreatePlaylist")]
-    partial class InitialCreatePlaylist
+    [Migration("20260816004601_migrations")]
+    partial class migrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

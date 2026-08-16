@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Module.Songs.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(SongsDbContext))]
-    [Migration("20260815222633_InitialCreateSongs")]
-    partial class InitialCreateSongs
+    [Migration("20260816004210_migrations")]
+    partial class migrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -28,7 +28,7 @@ internal sealed class GetPublisherByIdQueryHandler(IDbConnectionFactory dbConnec
         PublisherResponse? publisher = await connection.QuerySingleOrDefaultAsync<PublisherResponse>(sql, new { request.PublisherId });
         if (publisher is null)
         {
-            return Result.Failure<PublisherResponse>(PublisherError.NotFound(request.PublisherId));
+            return Result.Failure<PublisherResponse>(PublisherErrors.NotFound(request.PublisherId));
         }
 
         return Result.Success(publisher);

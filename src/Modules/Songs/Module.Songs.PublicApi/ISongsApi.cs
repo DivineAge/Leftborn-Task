@@ -15,5 +15,8 @@ public interface ISongsApi
     string firstName,
     string lastName,
     CancellationToken cancellationToken = default);
+    Task DeletePublisherAsync(
+    Guid publisherId,
+    CancellationToken cancellationToken = default);
 }
 

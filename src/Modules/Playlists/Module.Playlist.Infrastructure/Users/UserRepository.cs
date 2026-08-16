@@ -6,6 +6,11 @@ namespace Module.Playlist.Infrastructure.Users;
 
 public class UserRepository(PlaylistDbContext dbContext) : IUserRepository
 {
+    public void Delete(User user)
+    {
+        dbContext.Users.Remove(user);
+    }
+
     public async Task<User?> GetAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await dbContext.Users.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);

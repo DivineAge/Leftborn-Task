@@ -15,7 +15,7 @@ internal sealed class UpatePublisherCommandHandler(IPublisherRepository publishe
 
         if (publisher is null)
         {
-            return Result.Failure(PublisherError.NotFound(request.PublisherId));
+            return Result.Failure(PublisherErrors.NotFound(request.PublisherId));
         }
 
         publisher.Update(request.FirstName, request.LastName);

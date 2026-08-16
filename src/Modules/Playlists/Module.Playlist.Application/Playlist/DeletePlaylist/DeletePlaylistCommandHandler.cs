@@ -22,11 +22,6 @@ internal sealed class DeletePlaylistCommandHandler(
             return Result.Failure(PlaylistErrors.NotFound(request.PlaylistId));
         }
 
-        if (playlist.OwnerId != request.OwnerId)
-        {
-            return Result.Failure(PlaylistErrors.NotPlaylistOwner(request.OwnerId, request.PlaylistId));
-        }
-
         playlistRepository.Delete(playlist);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);

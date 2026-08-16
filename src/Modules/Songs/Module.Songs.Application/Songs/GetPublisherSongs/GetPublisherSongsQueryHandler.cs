@@ -20,7 +20,7 @@ internal sealed class GetPublisherSongsQueryHandler(
         Domain.Publisher.Publisher? publihser = await publisherRepository.GetAsync(request.PublisherId, cancellationToken);
         if (publihser is null)
         {
-            return Result.Failure<IEnumerable<SongResponse>>(PublisherError.NotFound(request.PublisherId));
+            return Result.Failure<IEnumerable<SongResponse>>(PublisherErrors.NotFound(request.PublisherId));
         }
         await using DbConnection connection = await dbConnectionFactory.CreateDbConnectionAsync();
 

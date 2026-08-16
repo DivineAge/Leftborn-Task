@@ -7,6 +7,5 @@ internal sealed class DeletePlaylistValidator : AbstractValidator<DeletePlaylist
     public DeletePlaylistValidator()
     {
         RuleFor(x => x.PlaylistId).NotEmpty().WithMessage("PlaylistId is required.");
-        RuleFor(x => x.OwnerId).NotEmpty().WithMessage("OwnerId is required.");
     }
 }

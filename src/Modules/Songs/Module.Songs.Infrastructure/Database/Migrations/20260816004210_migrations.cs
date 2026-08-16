@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Module.Songs.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreateSongs : Migration
+    public partial class migrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
