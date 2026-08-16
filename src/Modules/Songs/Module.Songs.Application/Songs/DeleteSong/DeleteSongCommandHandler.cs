@@ -21,9 +21,7 @@ internal sealed class DeleteSongCommandHandler(IPlaylistApi playlistApi, ISongRe
             return Result.Failure(SongError.NotFound(command.Id));
         }
 
-        try
-        {
-            await unitOfWork.BeginTransactionAsync(cancellationToken);
+
 
             await playlistApi.DeleteSongAsync(command.Id, cancellationToken);
 
@@ -31,14 +29,8 @@ internal sealed class DeleteSongCommandHandler(IPlaylistApi playlistApi, ISongRe
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            await unitOfWork.CommitTransactionAsync(cancellationToken);
             return Result.Success();
-        }
-        catch
-        {
-            await unitOfWork.RollbackTransactionAsync(cancellationToken);
-            throw;
-        }
+    
     }
 
 }

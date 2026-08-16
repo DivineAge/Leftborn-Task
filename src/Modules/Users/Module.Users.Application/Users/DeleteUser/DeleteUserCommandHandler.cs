@@ -16,6 +16,7 @@ internal sealed class DeleteUserCommandHandler(
 {
     public async Task<Result> Handle(DeleteUserCommand command, CancellationToken cancellationToken)
     {
+        
         User? user = await userRepository.GetAsync(command.Id, cancellationToken);
 
         if (user is null)
@@ -23,9 +24,6 @@ internal sealed class DeleteUserCommandHandler(
             return Result.Failure(UserError.NotFound(command.Id));
         }
 
-        try
-        {
-            await unitOfWork.BeginTransactionAsync(cancellationToken);
 
             await songsApi.DeletePublisherAsync(user.Id, cancellationToken);
 
@@ -36,12 +34,7 @@ internal sealed class DeleteUserCommandHandler(
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Success();
-        }
-        catch
-        {
-            await unitOfWork.RollbackTransactionAsync(cancellationToken);
-            throw;
-        }
+      
     }
 }
 

@@ -16,14 +16,12 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, ISongsApi public
 
         if (emailExists is not null)
         {
-            return (Result<Guid>)Result.Failure(UserError.EmailAlreadyExists(command.Email));
+            return Result.Failure<Guid>(UserError.EmailAlreadyExists(command.Email));
         }
 
         var user = User.Create(command.FirstName, command.LastName, command.Email);
 
-        try
-        {
-            await unitOfWork.BeginTransactionAsync(cancellationToken);
+  
 
             userRepository.Insert(user);
 
@@ -33,16 +31,9 @@ public class RegisterUserCommandHandler(IUnitOfWork unitOfWork, ISongsApi public
 
             await playlistApi.CreateUserAsync(user.Id, user.FirstName, user.LastName, command.Email, cancellationToken);
 
-            await unitOfWork.CommitTransactionAsync(cancellationToken);
 
             return user.Id;
-        }
-        catch
-        {
-            await unitOfWork.RollbackTransactionAsync(cancellationToken);
-            throw;
-        }
-        ;
+
 
     }
 }

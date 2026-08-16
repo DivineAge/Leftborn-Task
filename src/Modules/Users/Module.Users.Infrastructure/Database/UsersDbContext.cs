@@ -27,26 +27,5 @@ public class UsersDbContext(DbContextOptions<UsersDbContext> options) : DbContex
         await Database.BeginTransactionAsync(cancellationToken);
         
     }
-
-    public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
-    {
-        if (Database.CurrentTransaction is null)
-        {
-            return;
-        }
-
-        await Database.CurrentTransaction.CommitAsync(cancellationToken);
-    }
-
-    public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
-    {
-        if (Database.CurrentTransaction is null)
-        {
-            
-            return;
-        }
-
-        await Database.CurrentTransaction.RollbackAsync(cancellationToken);
-    }
     
 }

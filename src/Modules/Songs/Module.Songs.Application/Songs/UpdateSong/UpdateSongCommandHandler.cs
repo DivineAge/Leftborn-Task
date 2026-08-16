@@ -28,24 +28,11 @@ IPublisherRepository publisherRepository,
             return Result.Failure(PublisherErrors.NotFound(request.PublisherId));
         }
 
-        try
-        {
-            await unitOfWork.BeginTransactionAsync(cancellationToken);
+        await playlistApi.UpdateSongAsync(request.SongId, request.PublisherId, request.TimeInSeconds, request.Name, cancellationToken);
 
-            await playlistApi.UpdateSongAsync(request.SongId, request.PublisherId, request.TimeInSeconds, request.Name, cancellationToken);
+        song.Update(request.PublisherId, request.TimeInSeconds, request.Name);
 
-            song.Update(request.PublisherId, request.TimeInSeconds, request.Name);
-
-            await unitOfWork.SaveChangesAsync(cancellationToken);
-
-            await unitOfWork.CommitTransactionAsync(cancellationToken);
-
-        }
-        catch
-        {
-            await unitOfWork.RollbackTransactionAsync(cancellationToken);
-            throw;
-        }
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

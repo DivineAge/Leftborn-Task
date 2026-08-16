@@ -24,10 +24,6 @@ internal sealed class UpdateUserCommandHandler(
         }
         
         
-        try
-        {
-            await unitOfWork.BeginTransactionAsync(cancellationToken);
-
             user.Update(request.FirstName, request.LastName);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -36,14 +32,8 @@ internal sealed class UpdateUserCommandHandler(
 
             await playlistApi.UpdateUserAsync(user.Id, user.FirstName, user.LastName, cancellationToken);
 
-            await unitOfWork.CommitTransactionAsync(cancellationToken);
 
             return Result.Success();
-        }
-        catch
-        {
-            await unitOfWork.RollbackTransactionAsync(cancellationToken);
-            throw ;
-        }
+       
     }
 }

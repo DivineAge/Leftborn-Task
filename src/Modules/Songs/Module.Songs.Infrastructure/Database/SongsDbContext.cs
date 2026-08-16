@@ -24,34 +24,4 @@ public sealed class SongsDbContext(DbContextOptions<SongsDbContext> options) : D
         modelBuilder.ApplyConfiguration(new SongConfiguration());
     }
 
-    public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)
-    {
-        if (Database.CurrentTransaction is not null)
-        {
-            await Database.CurrentTransaction.DisposeAsync();
-        }
-
-        await Database.BeginTransactionAsync(cancellationToken);
-        
-    }
-
-    public async Task CommitTransactionAsync(CancellationToken cancellationToken = default)
-    {
-        if (Database.CurrentTransaction is null)
-        {
-            return;
-        }
-
-        await Database.CurrentTransaction.CommitAsync(cancellationToken);
-    }
-
-    public async Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
-    {
-        if (Database.CurrentTransaction is null)
-        { 
-            return;
-        }
-
-        await Database.CurrentTransaction.RollbackAsync(cancellationToken);
-    }
 }

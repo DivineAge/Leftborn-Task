@@ -47,7 +47,7 @@ dotnet ef database update \
 dotnet ef database update \
   --project src/Modules/Playlists/Module.Playlist.Infrastructure/Module.Playlist.Infrastructure.csproj \
   --startup-project src/API/API.csproj \
-  --context Playlist
+  --context PlaylistDbContext
 ```
 
 ```bash
