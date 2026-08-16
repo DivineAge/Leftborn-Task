@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Module.Songs.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(SongsDbContext))]
-    [Migration("20260816004210_migrations")]
+    [Migration("20260816122324_migrations")]
     partial class migrations
     {
         /// <inheritdoc />
