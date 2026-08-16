@@ -124,6 +124,24 @@ Stop and remove the containers:
 docker compose down
 ```
 
+## Running tests
+
+Luftborn Task includes separate unit and integration test projects. Run `dotnet test` from the corresponding test directory.
+
+### Integration tests
+
+```bash
+cd src/tests/Luftborn-Task.IntegrationTests
+dotnet test
+```
+
+### Unit tests
+
+```bash
+cd src/tests/Luftborn-Task.UnitTests
+dotnet test
+```
+
 ## Architecture design
 
 Luftborn Task is a **modular monolith** built using **Clean Architecture**. It runs as one application, while each business capability is separated into an independent module.
