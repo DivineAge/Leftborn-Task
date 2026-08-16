@@ -31,36 +31,7 @@ Install the `dotnet-ef` tool before applying the database migrations:
 ```bash
 dotnet tool install --global dotnet-ef
 ```
-
-### 4. Create the database schemas and tables
-
-Run the following commands from the **root directory of the project** after starting Docker Compose. The database services must be running before applying the Entity Framework Core migrations.
-
-```bash
-dotnet ef migrations add migrations \
-  --project src/Modules/Songs/Module.Songs.Infrastructure/Module.Songs.Infrastructure.csproj \
-  --startup-project src/API/API.csproj \
-  --context SongsDbContext \
-  --output-dir Database/Migrations
-```
-
-```bash
-dotnet ef migrations update \
-  --project src/Modules/Playlists/Module.Playlist.Infrastructure/Module.Playlist.Infrastructure.csproj \
-  --startup-project src/API/API.csproj \
-  --context PlaylistDbContext \
-  --output-dir Database/Migrations
-```
-
-```bash
-dotnet ef migrations add migrations \
-  --project src/Modules/Users/Module.Users.Infrastructure/Module.Users.Infrastructure.csproj \
-  --startup-project src/API/API.csproj \
-  --context UsersDbContext \
-  --output-dir Database/Migrations
-```
-
-### 5. Recreate migrations if necessary
+### 4. Recreate migrations if necessary
 
 If the migrations are missing or corrupted, you can delete the existing migration files and recreate them from the **root directory of the project** using the following commands:
 
@@ -90,7 +61,7 @@ dotnet ef migrations add migrations \
 
 > Only delete migration files if they are genuinely missing or corrupted. Recreating migrations may require a database reset or additional cleanup if the existing database already contains migration history.
 
-### 6. Access the application
+### 5. Access the application
 
 The backend API is available at:
 
