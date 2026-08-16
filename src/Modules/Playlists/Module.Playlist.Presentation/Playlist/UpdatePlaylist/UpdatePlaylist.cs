@@ -14,13 +14,13 @@ internal sealed class UpdatePlaylist : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("/api/playlists/id/{id}", async ([FromRoute] Guid id, [FromBody] Request request, ISender sender) =>
+        app.MapPut("/playlists/id/{id}", async ([FromRoute] Guid id, [FromBody] Request request, ISender sender) =>
         {
             Result result = await sender.Send(new UpdatePlaylistCommand(id, request.Name, request.OwnerId));
 
             return result.Match(() => Results.Ok(), ApiResults.Problem);
         }).AllowAnonymous()
-        .WithTags("Playlists");
+        .WithTags(Tags.Playlists);
     }
 }
 internal sealed record Request(string Name, Guid OwnerId);

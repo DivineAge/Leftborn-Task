@@ -13,7 +13,7 @@ internal sealed class GetPlaylist : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/users/{userId}/playlists/{playlistId}", async (Guid userId, Guid playlistId, ISender sender) =>
+        app.MapGet("/playlists/{playlistId}/users/{userId}", async (Guid userId, Guid playlistId, ISender sender) =>
         {
             Result<IEnumerable<UserPlaylistResponse>> result = await sender.Send(new GetUserPlaylistQuery(userId, playlistId));
 
@@ -21,6 +21,6 @@ internal sealed class GetPlaylist : IEndpoint
             return result.Match(Results.Ok, ApiResults.Problem);
         })
         .AllowAnonymous()
-        .WithTags("Playlists");
+        .WithTags(Tags.Playlists);
     }
 }

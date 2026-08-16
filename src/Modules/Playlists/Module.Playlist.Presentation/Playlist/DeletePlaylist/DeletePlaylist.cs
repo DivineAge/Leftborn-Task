@@ -15,13 +15,13 @@ internal sealed class DeletePlaylist : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/api/playlists/{playlistId:guid}", async ([FromRoute] Guid playlistId, ISender sender) =>
+        app.MapDelete("/playlists/{playlistId:guid}", async ([FromRoute] Guid playlistId, ISender sender) =>
         {
             Result result = await sender.Send(new DeletePlaylistCommand(playlistId));
 
             return result.Match(() => Results.Ok(), ApiResults.Problem);
         })
         .AllowAnonymous()
-        .WithTags("Playlists");
+        .WithTags(Tags.Playlists);
     }
 }

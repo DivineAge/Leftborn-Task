@@ -16,14 +16,14 @@ internal sealed class AddSong : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/playlists/addsong/", async ([FromBody] AddSongRequest request, ISender sender) =>
+        app.MapPost("/playlists/add-song/", async ([FromBody] AddSongRequest request, ISender sender) =>
         {
             Result result = await sender.Send(new AddSongCommand(request.PlaylistId, request.SongId, request.OwnerId));
 
             return result.Match(() => Results.Ok(), ApiResults.Problem);
         })
         .AllowAnonymous()
-        .WithTags("Playlists");
+        .WithTags(Tags.Playlists);
     }
 }
 

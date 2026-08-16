@@ -16,14 +16,14 @@ internal sealed class RemoveSong : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/api/playlists/deletesong/", async ([FromBody] RemoveSongRequest request, ISender sender) =>
+        app.MapDelete("/playlists/remove-song/", async ([FromBody] RemoveSongRequest request, ISender sender) =>
         {
             Result result = await sender.Send(new RemoveSongCommand(request.PlaylistId, request.SongId, request.OwnerId));
 
             return result.Match(() => Results.Ok(), ApiResults.Problem);
         })
         .AllowAnonymous()
-        .WithTags("Playlists");
+        .WithTags(Tags.Playlists);
     }
 }
 
